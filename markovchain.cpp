@@ -14,20 +14,24 @@ class matrix{
 		matrix(const matrix& M);
 		
 		matrix& operator=(const matrix& M);
-
-		matrix& operator*(const matrix& M);
+		matrix operator*(const matrix& M);
 		matrix& operator*=(const matrix& M);
 		double* operator[](int r);
+
+		
 		const double* operator[](int r) const;
 		int getCol() const;
 		int getRow() const;
 		int getElements() const;
 		bool isSquare() const;
+		bool isRegular() const;
 		//matrix pow(int h){}
 		void resize(int c, int r);
 		void resize(int n);
 		void print();
 		void editRow(double a[], int r);
+		
+		static matrix identity(int n);
 };
 
 
@@ -42,6 +46,17 @@ int main()
 	m *= m;
 
 	m.print();
+
+	matrix m2theH = matrix::identity(4);
+
+	for(int i = 0; i<7; i++)
+	{
+
+	}m2theH *= m;
+
+	m2theH.print();
+
+	
 
 	return 0;
 }
@@ -69,7 +84,7 @@ matrix& matrix::operator=(const matrix& M){
 	return *this;
 }
 
-matrix& matrix::operator*(const matrix& M)
+matrix matrix::operator*(const matrix& M)
 {
 	matrix P(0);
 	if(this->col == M.getRow() && this->row == M.getCol())
@@ -91,7 +106,8 @@ matrix& matrix::operator*(const matrix& M)
 	return P;
 }
 
-matrix& matrix::operator*=(const matrix& M){return (this->operator*(M));};
+matrix& matrix::operator*=(const matrix& M)
+	{return this->operator=(this->operator*(M));}
 		
 double* matrix::operator[](int r) {return &(this->M[this->col * r]);}
 const double* matrix::operator[](int r) const{return &(this->M[this->col * r]);}
@@ -127,4 +143,20 @@ void matrix::editRow(double a[], int r)
 {
 	for(int i=0; i<this->col; i++)
 		this->M[(r*this->col) + i] = a[i];
+}
+
+matrix matrix::identity(int n)
+{
+	matrix I(n);
+	for(int i=0; i<n; i++)
+		I[i][i] = 1;
+	return I;
+}
+
+bool matrix::isRegular() const{
+	bool regular = true;
+	for(int i=0; i<((this->row)*(this->col)) && regular; i++)
+		regular &= (this->M[i] > 0);
+
+	return regular;
 }

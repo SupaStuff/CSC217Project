@@ -24,7 +24,8 @@ int runSim(bool allowJail){//simulates one turn around the board
 	std::uniform_int_distribution<int> uni(min,max); // guaranteed unbiased
 
 	while (currentposition < 40){
-		if (allowJail && (doublecounter == 3 || currentposition == 30)){ //you are in jail!
+		//if (allowJail && (doublecounter == 3 || currentposition == 30)){ //you are in jail!
+		if(allowJail && currentposition == 30){
 			cerr << "You got into jail!";
 			int jailRolls = doublecounter = 0;
 			currentposition = 10;
@@ -50,8 +51,8 @@ int runSim(bool allowJail){//simulates one turn around the board
 }
 
 int main(int argc, char *argv[]){
-	std::ofstream output;
-	output.open("results.txt");
+	//std::ofstream output;
+	//output.open("results.txt");
 	bool allowJail = false;
 	int numberofRuns = 5000000; //change this to set how many times the loop runs!
 
