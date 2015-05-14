@@ -8,6 +8,7 @@
 #include <fstream>
 using std::cout;
 using std::endl;
+using std::cerr;
 
 int boardTiles[40];
 
@@ -24,7 +25,7 @@ int runSim(bool allowJail){//simulates one turn around the board
 
 	while (currentposition < 40){
 		if (allowJail && (doublecounter == 3 || currentposition == 30)){ //you are in jail!
-			cout << "You got into jail!";
+			cerr << "You got into jail!";
 			int jailRolls = doublecounter = 0;
 			currentposition = 10;
 			do{
@@ -64,15 +65,15 @@ int main(int argc, char *argv[]){
 		turnNumbers[i] = 0;
 
 	for(uint32_t i = 0; i < numberofRuns; i++){
-		cout << i << endl;	
+		cerr <<"Simlation# "<< i << endl;	
 		turnNumbers[runSim(allowJail)]++;
 	}
 
 	for (std::map<int,int>::iterator it = turnNumbers.begin(); it != turnNumbers.end(); ++it)
-		output << it->first <<": " << it->second << endl;
-	output << "The tiles were each rolled onto this many times:" << endl;
+		cout << it->first <<": " << it->second << endl;
+	cout << "The tiles were each rolled onto this many times:" << endl;
 	for (int i = 0; i < 40; i++)
-		output << i << ": " << boardTiles[i] << endl;
+		cout << i << ": " << boardTiles[i] << endl;
 
 	return 0;
 }

@@ -1,7 +1,7 @@
 SOURCES := $(wildcard *.cpp)
 OBJECTS := $(SOURCES:.cpp=.o)
 HEADERS := $(wildcard *.h)
-TARGETS := main monopolysim
+TARGETS := main monopolysim markovchain
 
 COMMON   := -O2 -Wall -DNDEBUG -std=c++11
 CFLAGS   := $(CFLAGS) $(COMMON)

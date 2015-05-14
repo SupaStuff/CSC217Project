@@ -1,0 +1,31 @@
+#include<iostream>
+using std::cout;
+#include<vector>
+using std::vector;
+
+class matrix{
+	private:
+		std::vector<double> M;
+		int col;
+		int row;
+	public:
+		matrix(int c, int r);
+		matrix(int n);
+		matrix(const matrix& M);
+		
+		matrix& operator=(const matrix& M);
+
+		matrix operator*(const matrix& M);
+
+		double* operator[](int r);
+		const double* operator[](int r) const;
+		int getCol() const;
+		int getRow() const;
+		int getElements() const;
+		bool isSquare() const;
+		//matrix pow(int h){}
+		void resize(int c, int r);
+		void resize(int n);
+		void print();
+		void editRow(double a[], int r);
+};
