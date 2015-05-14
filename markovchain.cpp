@@ -1,7 +1,12 @@
 #include<iostream>
 using std::cout;
+using std::cerr;
 #include<vector>
 using std::vector;
+#include <fstream>
+using std::ofstream;
+#include <string>
+using std::string;
 
 class matrix{
 	private:
@@ -37,26 +42,63 @@ class matrix{
 
 int main()
 {
-	matrix m(4);
-	double matx[4][4] = {{2,1,0,0},
-						 {0,1,0,0},
-						 {0,4,1,0},
-						 {0,0,0,1}};
-	for(int i=0; i<4; i++)m.editRow(matx[i], i);
-	m *= m;
+	int n = 42, r, c;
+	//dice roll probabilities saved in file "dice"
+	double dice[13] = {
+		#include "dice"
+	};
 
-	m.print();
-
-	matrix m2theH = matrix::identity(4);
-
-	for(int i = 0; i<7; i++)
+	matrix monopoly(n); //40 tiles and 3 jail states. 1st jail state is tile 30
+	for(r=0; r<n; r++)
 	{
+		if(r==30)
+		{
+			monopoly[r][10] = 0.1667;
+			monopoly[r][40] = 0.8333;
+		}
+		else if(r==40)
+		{
+			monopoly[r][10] = 0.1667;
+			monopoly[r][41] = 0.8333;
+		}
+		else if(r==41) monopoly[r][10] = 1;
+		else
+		{
+			for(c=0; c<13; c++)
+				monopoly[r][(r+c)%42] = dice[c];
+		}
+	}
+#if 0
+	ofstream out;
+	std::streambuf *coutbuf = cout.rdbuf();
+	string outFile;
+	//out.open(outFile.c_str());
+	//cout.rdbuf(out.rdbuf());
+	r = 0;
+	matrix I = matrix::identity(n);
+	do
+	{
+		I *= monopoly;
+		outFile =  "matrix"+r;
+		out.open(outFile.c_str());
+		I.print();
+		out.flush();
+		out.close();
+		out.clear();
+		r++;
+		cerr<<r<<"\n";
+	}while(!I.isRegular());
+	//monopoly.print();
+	cout.rdbuf(coutbuf);
+#endif
 
-	}m2theH *= m;
-
-	m2theH.print();
-
-	
+	matrix I = matrix::identity(n);
+	for(r=0; r<500000; r++)
+	{
+		I *= monopoly;
+		cerr<<r<<"\n";
+	}
+	I.print();
 
 	return 0;
 }
